@@ -1,0 +1,73 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+}
+
+ext {
+    core_version = "1.7.0" // https://developer.android.com/jetpack/androidx/releases/core
+    activity_version = "1.4.0" // https://developer.android.com/jetpack/androidx/releases/activity
+    compose_version = "1.1.0-beta01" // https://developer.android.com/jetpack/androidx/releases/compose
+    material3_version = "1.0.0-alpha01" // https://developer.android.com/jetpack/androidx/releases/compose-material3
+}
+
+android {
+    compileSdk 31
+
+    defaultConfig {
+        applicationId "de.felix_schuetz.compose_navigation_test"
+        minSdk 30
+        targetSdk 31
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+        useIR = true
+        freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+    }
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_version
+    }
+
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+}
+
+repositories {
+    google()
+    mavenCentral()
+}
+
+dependencies {
+    implementation "androidx.core:core-ktx:$core_version"
+    implementation "androidx.activity:activity-compose:$activity_version"
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    implementation "androidx.compose.material3:material3:$material3_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+}

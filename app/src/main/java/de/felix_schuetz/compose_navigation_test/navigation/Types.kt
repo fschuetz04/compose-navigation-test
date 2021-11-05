@@ -20,7 +20,7 @@ internal data class NavOptions(val popUpToRoot: Boolean)
  * @param content Composable content to be shown when the destination is visible.
  * @param wrappers Wrapper composables previously added by calling [NavGraphBuilder.wrap].
  */
-internal data class Destination(
+data class Destination(
     val content: @Composable () -> Unit,
-    val wrappers: List<Wrapper>,
+    val wrapper: Wrapper?,
 )

@@ -1,5 +1,7 @@
 package de.felix_schuetz.compose_navigation_test.navigation
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -13,6 +15,7 @@ import androidx.compose.runtime.remember
  * @param startRoute Route of the destination to be shown initially.
  * @param builder Navigation graph.
  */
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun NavHost(
     navController: NavController,
@@ -30,21 +33,17 @@ fun NavHost(
     }
 
     val route by navController.currentRouteAsState()
-
     val destination = navGraph[route]
+
     if (destination != null) {
-        if (destination.wrappers.isEmpty()) {
-            destination.content()
-        } else {
-            val wrapper = destination.wrappers.reduce { acc, wrapper ->
-                { content ->
-                    acc {
-                        wrapper(content)
-                    }
+        if (destination.wrapper != null) {
+            destination.wrapper.invoke {
+                AnimatedContent(targetState = destination.content) { targetContent ->
+                    targetContent()
                 }
             }
-
-            wrapper(destination.content)
+        } else {
+            destination.content()
         }
     }
 }
